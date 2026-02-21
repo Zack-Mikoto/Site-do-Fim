@@ -1,0 +1,238 @@
+body {
+    background-color: black;
+    color: rgb(139, 10, 10);
+    font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(img/JollyRogerZack.png);
+    background-position:0px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+}
+
+header {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 56px;    
+}
+
+.historia {
+    color: rgb(54, 120, 139);
+}
+
+.curiosidades {
+    text-align: center;
+    color: green;
+}
+
+.Header1 {
+    text-align: center;
+    color: rgb(202, 2, 202);
+    font-size: 48px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.Header-Morrigan {
+    text-align: center;
+    color: rgb(202, 2, 202);
+    font-size: 48px;
+    margin-top: 80px;
+}
+
+.dialog {
+    background-color: rgb(133, 122, 59);
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    align-items: center;
+    padding: 32px;
+}
+
+h1 {
+    text-align: center;
+    padding: 32px;
+}
+
+.s1 {
+    color:rgb(161, 161, 161);
+    font-size: 32px;
+}
+
+.s2 {
+    color:darkred;
+    font-size: 32px;
+}
+
+
+.botaoclasse {
+    background-color: black;
+    border: solid blue;
+    color: rgb(0, 102, 255);
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+.carateca {
+    border-radius: 8px;
+    border: solid blue;
+    max-width: 48px;
+    text-align: center;
+}
+.botaoraca {
+    background-color: black;
+    border: solid darkred;
+    color: darkred;
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+.humanomod {
+    border-radius: 8px;
+    border: solid darkred;
+    max-width: 48px;
+    text-align: center;
+}
+.botaoprof {
+    background-color: black;
+    border: solid goldenrod;
+    color: goldenrod;
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+.arqueologo {
+    border-radius: 8px;
+    border: solid goldenrod;
+    max-width: 48px;
+    text-align: center;
+}
+.fruta {
+    border-radius: 8px;
+    border: solid rgb(99, 99, 99);
+    max-width: 48px;
+    text-align: center;
+}
+
+
+.s3 {
+    color:green;
+    font-size: 32px;
+}
+
+.s4 {
+    color:rgb(133, 122, 59);
+    font-size: 32px;
+}
+
+.s5 {
+    color:darkmagenta;
+    font-size: 32px;
+}
+
+.zack {
+    max-width: 100px;
+}
+
+.botao {
+    all: unset;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: black;
+    border: solid rgb(133, 122, 59);
+    background: linear-gradient(135deg, rgb(133, 122, 59), rgb(133, 122, 59));
+    color: rgb(0, 102, 255);
+}
+.botao2 {
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.fichadozack {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.status {
+    display: grid;
+    grid-template-columns: repeat(6, 2fr);
+    text-align: center;
+}
+
+.bordaletra {
+    border: solid black;
+}
+
+summary {
+    text-align: center;
+    padding: 8px;
+}
+
+.cartaz {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    max-width: 400px;
+    justify-content: center;
+    border: solid rgb(133, 122, 59);
+    margin: 0 auto;
+    padding: 0px;
+}
+
+.link-azul{
+    color: lightblue;
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+}
+
+.link-laranja{
+    color: orange;
+}
+
+.link-vermelho{
+    color: red;
+}
+
+.freyr {
+    width: 150px;
+    height: 150px;
+    border: solid lightblue;
+}
+
+.ladgerda {
+    width: 150px;
+    height: 150px;
+    border: solid orange;
+}
+
+.rosso {
+    width: 150px;
+    height: 150px;
+    border: solid red;
+}
+
+.relações {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 25px;
+    color:indigo;
+    padding: 0;
+}
+
+.relação {
+    width: 200px;
+    height: 200px;
+    border: solid gray;
+    border-radius: 64px;
+    display: grid
+}

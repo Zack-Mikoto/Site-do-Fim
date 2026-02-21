@@ -1,0 +1,109 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+header {
+    text-align: center;
+    color: whitesmoke;
+    font-size: 48px;
+}
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    justify-content: space-between;
+    list-style-type: none;
+    text-align: center;
+    padding: 16px;
+}
+
+.link-roxo{
+    color: purple;
+    list-style-type: none;
+}
+
+.link-azulesc{
+    color: darkblue;
+}
+
+.link-amarelo{
+    color: rgb(214, 214, 0);
+}   
+
+.link-vermelhoesc{
+    color: darkred;
+}
+
+.link-laranjaesc{
+    color: orangered;
+}
+
+.link-azulesc2{
+    color: rgb(55, 0, 255);
+}
+
+.link-verde{
+    color: green;
+}
+
+.freyr {
+    width: 150px;
+    height: 150px;
+    border: solid purple;
+}
+
+.ladgerda {
+    width: 150px;
+    height: 150px;
+    border: solid orange;
+}
+
+.zack {
+    width: 150px;
+    height: 150px;
+    border: solid darkblue;
+}
+
+.yone {
+    width: 150px;
+    height: 150px;
+    border: solid darkred;
+}
+
+.mor {
+    width: 150px;
+    height: 150px;
+    border: solid orangered;
+} 
+
+.akira {
+    width: 150px;
+    height: 150px;
+    border: solid green;
+} 
+
+.arthur {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(55, 0, 255);
+} 
+
+.percy {
+    width: 150px;
+    height: 150px;
+    border: solid rgba(255, 255, 0, 0.836);
+} 
+
+.NavGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 100px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 20px;
+    color:indigo;
+    padding: 0;
+}

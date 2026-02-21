@@ -1,0 +1,100 @@
+body {
+    background-color: rgb(211, 125, 55);
+    color: rgb(51, 38, 9);
+    font-family: 'Times New Roman', Times, serif;
+}
+
+header {
+    text-align: center;
+    color: rgb(190, 3, 190);
+    font-size: 48px;
+}
+
+.Header1 {
+    text-align: center;
+    color: rgb(202, 2, 202);
+    font-size: 48px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.Header-Morrigan {
+    text-align: center;
+    color: rgb(202, 2, 202);
+    font-size: 48px;
+    margin-top: 80px;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    align-items: center;
+    padding: 32px;
+}
+
+h1 {
+    text-align: center;
+    padding: 32px;
+}
+
+.link-azul{
+    color: lightblue;
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+}
+
+.link-laranja{
+    color: orange;
+}
+
+.link-vermelho{
+    color: red;
+}
+
+.freyr {
+    width: 150px;
+    height: 150px;
+    border: solid lightblue;
+}
+
+.ladgerda {
+    width: 150px;
+    height: 150px;
+    border: solid orange;
+}
+
+.rosso {
+    width: 150px;
+    height: 150px;
+    border: solid red;
+}
+
+.relações {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 25px;
+    color:indigo;
+    padding: 0;
+}
+
+.relação {
+    width: 200px;
+    height: 200px;
+    border: solid gray;
+    border-radius: 64px;
+    display: grid
+}
+
+.historia {
+    color: white;
+}
+
+.curiosidades {
+    text-align: center;
+    color: green;
+}

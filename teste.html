@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tópicos Interativos</title>
+<style>
+  .conteudo {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+  }
+
+  .conteudo.ativo {
+    display: block;
+  }
+
+  .topico {
+    cursor: pointer;
+    color: blue;
+    margin: 10px 0;
+  }
+</style>
+</head>
+<body>
+
+<h2 class="topico" onclick="abrir('t1')">Tópico 1</h2>
+<h2 class="topico" onclick="abrir('t2')">Tópico 2</h2>
+<h2 class="topico" onclick="abrir('t3')">Tópico 3</h2>
+
+<div id="t1" class="conteudo">
+  Conteúdo do Tópico 1
+</div>
+
+<div id="t2" class="conteudo">
+  Conteúdo do Tópico 2
+</div>
+
+<div id="t3" class="conteudo">
+  Conteúdo do Tópico 3
+</div>
+
+<script>
+  function abrir(id) {
+    document.querySelectorAll('.conteudo')
+      .forEach(div => div.classList.remove('ativo'));
+
+    document.getElementById(id).classList.add('ativo');
+  }
+</script>
+
+</body>
+</html>

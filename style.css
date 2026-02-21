@@ -1,0 +1,73 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    background-image: url(img/placeholder.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+header {
+    text-align: center;
+    color: whitesmoke;
+    font-size: 48px;
+}
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    justify-content: space-between;
+    list-style-type: none;
+    text-align: center;
+    padding: 16px;
+}
+
+.link-azul{
+    text-align: center;
+    color: lightblue;
+    list-style-type: none;
+}
+
+.link-laranja{
+    text-align: center;
+    color: whitesmoke;
+    list-style-type: none;
+}
+
+.link-dourado{
+    text-align: center;
+    color: goldenrod;
+    list-style-type: none;
+}
+
+.rei{
+    width: 150px;
+    height: 150px;
+    border: solid goldenrod;
+}
+
+.link-vermelho {
+    text-align: center;
+    color: red;
+    list-style-type: none;
+}
+
+.freyr {
+    width: 150px;
+    height: 150px;
+    border: solid lightblue;
+}
+
+.ladgerda {
+    width: 150px;
+    height: 150px;
+    border: solid whitesmoke;
+}
+
+.rosso {
+    width: 150px;
+    height: 150px;
+    border: solid red;
+
+}
