@@ -131,7 +131,10 @@ h1 {
     color:darkmagenta;
     font-size: 32px;
 }
-
+.s6 {
+    color:rgb(0, 140, 255);
+    font-size: 32px;
+}
 .zack {
     max-width: 100px;
 }
@@ -216,6 +219,27 @@ summary {
     width: 150px;
     height: 150px;
     border: solid red;
+}
+
+.afiliacoes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 25px;
+    color:indigo;
+    padding: 0;
+    text-align: center;
+}
+
+.afiliacao {
+    width: 200px;
+    height: 200px;
+    border: solid gray;
+    border-radius: 64px;
+    display: grid;
+    text-align: center;
 }
 
 .relações {
