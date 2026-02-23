@@ -66,6 +66,37 @@ h1 {
     font-size: 32px;
 }
 
+.botaoraca {
+    background-color: black;
+    border: solid darkred;
+    color: darkred;
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.humanomod {
+    border-radius: 8px;
+    border: solid darkred;
+    max-width: 48px;
+    text-align: center;
+}
+
+.botaoantecedente {
+    background-color: black;
+    border: solid rgb(82, 175, 252);
+    color: rgb(82, 175, 252);
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.familiad {
+    border-radius: 8px;
+    border: solid rgb(82, 175, 252);
+    max-width: 48px;
+    text-align: center;
+}
 
 .botaoclasse {
     background-color: black;
@@ -75,26 +106,30 @@ h1 {
     max-width: 96px;
     text-align: right;
 }
+
 .carateca {
     border-radius: 8px;
     border: solid blue;
     max-width: 48px;
     text-align: center;
 }
-.botaoraca {
+
+.botaomaestria {
     background-color: black;
-    border: solid darkred;
-    color: darkred;
+    border: solid rgb(61, 61, 61);
+    color: rgb(61, 61, 61);
     border-radius: 8px;
     max-width: 96px;
     text-align: right;
 }
-.humanomod {
+
+.mestredehaki {
     border-radius: 8px;
-    border: solid darkred;
+    border: solid rgb(61, 61, 61);
     max-width: 48px;
     text-align: center;
 }
+
 .botaoprof {
     background-color: black;
     border: solid goldenrod;
@@ -111,7 +146,7 @@ h1 {
 }
 .fruta {
     border-radius: 8px;
-    border: solid rgb(99, 99, 99);
+    border: solid darkslateblue;;
     max-width: 48px;
     text-align: center;
 }
@@ -228,9 +263,8 @@ summary {
     max-width: 900px;
     margin: 0 auto;
     font-size: 25px;
-    color:indigo;
+    color:whitesmoke;
     padding: 0;
-    text-align: center;
 }
 
 .afiliacao {
@@ -239,7 +273,7 @@ summary {
     border: solid gray;
     border-radius: 64px;
     display: grid;
-    text-align: center;
+    justify-self: center;
 }
 
 .relações {
@@ -249,7 +283,7 @@ summary {
     max-width: 900px;
     margin: 0 auto;
     font-size: 25px;
-    color:indigo;
+    color:whitesmoke;
     padding: 0;
 }
 
@@ -259,4 +293,9 @@ summary {
     border: solid gray;
     border-radius: 64px;
     display: grid
+}
+
+.links {
+    color: whitesmoke;
+    text-decoration: none;
 }
