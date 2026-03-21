@@ -2,7 +2,7 @@ body {
     background-color: black;
     color: rgb(139, 10, 10);
     font-family: 'Times New Roman', Times, serif;
-    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(img/JollyRogerZack.png);
+    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(../../img/JollyRogers/JollyRogerZack.png);
     background-position:0px;
     background-repeat: no-repeat;
     background-size:cover;
