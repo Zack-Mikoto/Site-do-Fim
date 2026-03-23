@@ -1,8 +1,6 @@
 body {
-    background-color: black;
-    color: white;
+    background: url(img/Fundo2.png), linear-gradient(to bottom, rgb(7, 64, 128), rgb(11, 108, 171));
     font-family: 'Times New Roman', Times, serif;
-    background-image: url(img/placeholder.png);
     background-repeat: no-repeat;
     background-position: center;
 }
