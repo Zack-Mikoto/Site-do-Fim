@@ -56,14 +56,89 @@ h1 {
     padding: 32px;
 }
 
+.sd1 {
+    text-align: center;
+}
+
 .s1 {
-    color:rgb(161, 161, 161);
+    color:white;
     font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(179, 179, 179);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
 }
 
 .s2 {
-    color:darkred;
+    color:white;
     font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: darkred;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s3 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: green;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s4 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(133, 122, 59);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s5 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: darkmagenta;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s6 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(0, 140, 255);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.si::before {
+    content: "▶";
+    display: inline-block;
+    font-size: 32px;
+    transition: transform 0.3s ease;
+}
+
+details[open] .si::before {
+    transform: rotate(90deg);
+}
+
+.p0 {
+    text-align: left;
 }
 
 .botaoraca {
@@ -151,25 +226,6 @@ h1 {
     text-align: center;
 }
 
-
-.s3 {
-    color:green;
-    font-size: 32px;
-}
-
-.s4 {
-    color:rgb(133, 122, 59);
-    font-size: 32px;
-}
-
-.s5 {
-    color:darkmagenta;
-    font-size: 32px;
-}
-.s6 {
-    color:rgb(0, 140, 255);
-    font-size: 32px;
-}
 .zack {
     max-width: 100px;
 }

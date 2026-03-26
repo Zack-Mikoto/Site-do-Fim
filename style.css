@@ -39,10 +39,125 @@ ul {
     list-style-type: none;
 }
 
+.link-roxo{
+    text-align: center;
+    color: rgb(139, 4, 139);
+    list-style-type: none;
+}
+
+.link-marrom{
+    text-align: center;
+    color: rgb(37, 22, 8);
+    list-style-type: none;
+}
+
+.f0 {
+    text-align: center;
+}
+.ff1 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: blue;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff2 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: orange;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff3 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: red;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff4 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(255, 209, 94);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff5 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(139, 4, 139);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff6 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(37, 22, 8);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff7 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(255, 150, 238);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.ff8 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(61, 58, 50);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
 .rei{
     width: 150px;
     height: 150px;
-    border: solid goldenrod;
+    border: solid rgb(255, 209, 94);
+}
+
+.aphin{
+    width: 150px;
+    height: 150px;
+    border: solid rgb(139, 4, 139);
+}
+
+.hyde{
+    width: 150px;
+    height: 150px;
+    border: solid rgb(37, 22, 8);
 }
 
 .link-vermelho {
@@ -51,21 +166,44 @@ ul {
     list-style-type: none;
 }
 
-.freyr {
+.link-rosa {
+    text-align: center;
+    color: rgb(255, 150, 238);
+    list-style-type: none;
+}
+
+.link-cinza {
+    text-align: center;
+    color: rgb(61, 58, 50);
+    list-style-type: none;
+}
+
+.zack {
     width: 150px;
     height: 150px;
-    border: solid lightblue;
+    border: solid blue;
 }
 
 .ladgerda {
     width: 150px;
     height: 150px;
-    border: solid whitesmoke;
+    border: solid orange;
 }
 
 .rosso {
     width: 150px;
     height: 150px;
     border: solid red;
+}
 
+.ari {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(255, 150, 238);
+}
+
+.vengeance {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(61, 58, 50);
 }
