@@ -355,3 +355,17 @@ summary {
     color: whitesmoke;
     text-decoration: none;
 }
+
+.armas {
+    text-align: center;
+    color: azure;
+    border: lightblue;
+    border-radius: 1px;
+}
+
+.IDOH {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(66, 66, 66);
+    border-radius: 10px;
+}
