@@ -369,3 +369,17 @@ summary {
     border: solid rgb(66, 66, 66);
     border-radius: 10px;
 }
+
+.MAHA {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(216, 184, 0);
+    border-radius: 10px;
+}
+
+.SHIKKE {
+    width: 150px;
+    height: 150px;
+    border: solid aquamarine;
+    border-radius: 10px;
+}
