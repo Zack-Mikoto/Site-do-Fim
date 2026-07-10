@@ -1,13 +1,46 @@
 body {
-    background-color: rgb(53, 39, 39);
-    color: purple;
+    background-color: black;
+    color: rgb(139, 10, 10);
     font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(../../img/JollyRogers/JollyRogerAkira.png);
+    background-position:0px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
 }
 
 header {
     text-align: center;
-    color: rgb(190, 3, 190);
+    color: rgb(255, 255, 255);
+    font-size: 56px;    
+}
+
+.historia {
+    color: rgb(54, 120, 139);
+}
+
+.curiosidades {
+    text-align: center;
+    color: green;
+}
+
+.Header1 {
+    text-align: center;
+    color: rgb(202, 2, 202);
     font-size: 48px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.Header-Morrigan {
+    text-align: center;
+    color: rgb(202, 2, 202);
+    font-size: 48px;
+    margin-top: 80px;
+}
+
+.dialog {
+    background-color: rgb(133, 122, 59);
 }
 
 ul {
@@ -21,6 +54,229 @@ ul {
 h1 {
     text-align: center;
     padding: 32px;
+}
+
+.sd1 {
+    text-align: center;
+}
+
+.s1 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(179, 179, 179);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s2 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: darkred;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s3 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: green;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s4 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(133, 122, 59);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s5 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: darkmagenta;
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.s6 {
+    color:white;
+    font-size: 32px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(0, 140, 255);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
+.si::before {
+    content: "▶";
+    display: inline-block;
+    font-size: 32px;
+    transition: transform 0.3s ease;
+}
+
+details[open] .si::before {
+    transform: rotate(90deg);
+}
+
+.p0 {
+    text-align: left;
+}
+
+.botaoraca {
+    background-color: black;
+    border: solid darkred;
+    color: darkred;
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.humanomod {
+    border-radius: 8px;
+    border: solid darkred;
+    max-width: 48px;
+    text-align: center;
+}
+
+.botaoantecedente {
+    background-color: black;
+    border: solid rgb(82, 175, 252);
+    color: rgb(82, 175, 252);
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.familiad {
+    border-radius: 8px;
+    border: solid rgb(82, 175, 252);
+    max-width: 48px;
+    text-align: center;
+}
+
+.botaoclasse {
+    background-color: black;
+    border: solid blue;
+    color: rgb(0, 102, 255);
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.carateca {
+    border-radius: 8px;
+    border: solid blue;
+    max-width: 48px;
+    text-align: center;
+}
+
+.botaomaestria {
+    background-color: black;
+    border: solid rgb(61, 61, 61);
+    color: rgb(61, 61, 61);
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+
+.mestredehaki {
+    border-radius: 8px;
+    border: solid rgb(61, 61, 61);
+    max-width: 48px;
+    text-align: center;
+}
+
+.botaoprof {
+    background-color: black;
+    border: solid goldenrod;
+    color: goldenrod;
+    border-radius: 8px;
+    max-width: 96px;
+    text-align: right;
+}
+.arqueologo {
+    border-radius: 8px;
+    border: solid goldenrod;
+    max-width: 48px;
+    text-align: center;
+}
+.fruta {
+    border-radius: 8px;
+    border: solid darkslateblue;;
+    max-width: 48px;
+    text-align: center;
+}
+
+.zack {
+    max-width: 100px;
+}
+
+.botao {
+    all: unset;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: black;
+    border: solid rgb(133, 122, 59);
+    background: linear-gradient(135deg, rgb(133, 122, 59), rgb(133, 122, 59));
+    color: rgb(0, 102, 255);
+}
+.botao2 {
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.fichadozack {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.status {
+    display: grid;
+    grid-template-columns: repeat(6, 2fr);
+    text-align: center;
+}
+
+.bordaletra {
+    border: solid black;
+}
+
+summary {
+    text-align: center;
+    padding: 8px;
+}
+
+.cartaz {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    max-width: 400px;
+    justify-content: center;
+    border: solid rgb(133, 122, 59);
+    margin: 0 auto;
+    padding: 0px;
 }
 
 .link-azul{
@@ -54,4 +310,76 @@ h1 {
     width: 150px;
     height: 150px;
     border: solid red;
+}
+
+.afiliacoes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 25px;
+    color:whitesmoke;
+    padding: 0;
+}
+
+.afiliacao {
+    width: 200px;
+    height: 200px;
+    border: solid gray;
+    border-radius: 64px;
+    display: grid;
+    justify-self: center;
+}
+
+.relações {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 25px;
+    color:whitesmoke;
+    padding: 0;
+}
+
+.relação {
+    width: 200px;
+    height: 200px;
+    border: solid gray;
+    border-radius: 64px;
+    display: grid
+}
+
+.links {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.armas {
+    text-align: center;
+    color: azure;
+    border: lightblue;
+    border-radius: 1px;
+}
+
+.IDOH {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(66, 66, 66);
+    border-radius: 10px;
+}
+
+.MAHA {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(216, 184, 0);
+    border-radius: 10px;
+}
+
+.SHIKKE {
+    width: 150px;
+    height: 150px;
+    border: solid aquamarine;
+    border-radius: 10px;
 }
