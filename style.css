@@ -142,6 +142,17 @@ ul {
     padding: 0.5% 1.2%;
 }
 
+.ff9 {
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: rgb(22, 180, 30);
+    line-height: 0.6;
+    padding: 0.5% 1.2%;
+}
+
 .rei{
     width: 150px;
     height: 150px;
@@ -178,6 +189,12 @@ ul {
     list-style-type: none;
 }
 
+.link-verde {
+    text-align: center;
+    color: rgb(22, 180, 30);
+    list-style-type: none;
+}
+
 .zack {
     width: 150px;
     height: 150px;
@@ -206,4 +223,10 @@ ul {
     width: 150px;
     height: 150px;
     border: solid rgb(61, 58, 50);
+}
+
+.roleta {
+    width: 150px;
+    height: 150px;
+    border: solid rgb(22, 180, 30);
 }

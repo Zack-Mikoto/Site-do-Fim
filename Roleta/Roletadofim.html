@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roleta de Personagens</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg-0:#080c14;
+    --bg-1:#0d1420;
+    --bg-2:#131c2c;
+    --bg-3:#1a2538;
+    --gold:#d8b46a;
+    --gold-soft:rgba(216,180,106,.32);
+    --gold-dim:rgba(216,180,106,.14);
+    --cyan:#5fd0dc;
+    --cyan-dim:rgba(95,208,220,.18);
+    --text:#eef1f6;
+    --muted:#8896ac;
+    --danger:#c1615a;
+    --item-h:104px;
+    font-size:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 900px 500px at 20% 0%, rgba(95,208,220,.06), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 100% 100%, rgba(216,180,106,.07), transparent 60%),
+      linear-gradient(160deg, var(--bg-0), var(--bg-1) 55%, var(--bg-0));
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:clamp(12px,3vh,28px) 16px;
+  }
+
+  .app{
+    width:100%;
+    max-width:920px;
+    display:flex;
+    flex-direction:column;
+    gap:clamp(10px,1.6vh,18px);
+  }
+
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:.72rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  .eyebrow .rule{flex:1;height:1px;background:linear-gradient(90deg, var(--gold-soft), transparent);}
+  .eyebrow .diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);flex:none;}
+
+  /* ---------- Group bar ---------- */
+  .group-bar{
+    position:relative;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .group-tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    flex:1;
+  }
+  .group-pill{
+    font-family:'Inter', sans-serif;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--muted);
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.1);
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .group-pill:hover{color:var(--text); border-color:rgba(255,255,255,.24);}
+  .group-pill .count{
+    font-size:.68rem; color:var(--muted); background:rgba(255,255,255,.06);
+    border-radius:999px; padding:1px 6px;
+  }
+  .group-pill.active{
+    color:var(--gold);
+    background:var(--gold-dim);
+    border-color:var(--gold-soft);
+  }
+  .group-pill.active .count{color:var(--gold); background:rgba(216,180,106,.16);}
+  .group-pill.custom-pill.active{color:var(--cyan); background:var(--cyan-dim); border-color:rgba(95,208,220,.4);}
+  .group-pill.custom-pill.active .count{color:var(--cyan); background:rgba(95,208,220,.16);}
+
+  .custom-panel{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    z-index:10;
+    width:260px;
+    background:linear-gradient(160deg, var(--bg-2), var(--bg-1));
+    border:1px solid rgba(95,208,220,.28);
+    border-radius:10px;
+    padding:14px;
+    box-shadow:0 16px 32px -10px rgba(0,0,0,.6);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .custom-panel .cp-title{
+    font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); font-weight:700;
+  }
+  .custom-list{display:flex; flex-direction:column; gap:2px; max-height:180px; overflow-y:auto;}
+  .custom-row{
+    display:flex; align-items:center; gap:8px;
+    padding:6px 4px; border-radius:6px; cursor:pointer;
+    font-size:.82rem; color:var(--text);
+  }
+  .custom-row:hover{background:rgba(255,255,255,.04);}
+  .custom-row input{accent-color:var(--cyan);}
+  .custom-row .rc-count{margin-left:auto; font-size:.68rem; color:var(--muted);}
+  .custom-create{
+    display:flex; gap:6px;
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:10px;
+  }
+  .custom-create input{
+    flex:1; min-width:0;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:6px;
+    padding:7px 9px;
+    color:var(--text);
+    font-size:.78rem;
+  }
+  .custom-create input:focus{outline:none; border-color:var(--cyan-dim);}
+  .custom-create button{
+    font-size:.75rem; font-weight:600; white-space:nowrap;
+    background:var(--cyan-dim); color:var(--cyan);
+    border:1px solid rgba(95,208,220,.35);
+    border-radius:6px; padding:7px 10px; cursor:pointer;
+  }
+  .custom-create button:hover{background:rgba(95,208,220,.28);}
+
+  .stage{
+    display:flex;
+    gap:22px;
+    background:linear-gradient(160deg, var(--bg-2), var(--bg-1));
+    border:1px solid rgba(216,180,106,.12);
+    border-radius:14px;
+    padding:clamp(12px,2.4vh,22px);
+    position:relative;
+    overflow:hidden;
+  }
+  .stage::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 1px, transparent 1px 64px);
+    pointer-events:none;
+  }
+
+  /* ---------- Roulette column ---------- */
+  .roulette-col{
+    flex:none;
+    width:220px;
+    position:relative;
+  }
+  .roulette-viewport{
+    position:relative;
+    height:clamp(320px, 52vh, 480px);
+    overflow:hidden;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.15) 20%, rgba(0,0,0,.15) 80%, rgba(0,0,0,.35));
+    cursor:grab;
+    touch-action:none;
+  }
+  .roulette-viewport.dragging{cursor:grabbing;}
+
+  .track{position:absolute; inset:0;}
+  .item{
+    position:absolute;
+    left:12px; right:12px;
+    height:calc(var(--item-h) - 14px);
+    top:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 10px;
+    border-radius:8px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.05);
+    transform-origin:center center;
+    will-change:transform, opacity;
+    cursor:pointer;
+    user-select:none;
+  }
+  .item.active{
+    background:linear-gradient(90deg, var(--gold-dim), rgba(255,255,255,.03));
+    border-color:var(--gold-soft);
+  }
+  .item img{
+    width:44px; height:44px;
+    border-radius:6px;
+    object-fit:cover;
+    flex:none;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .item .item-name{
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--muted);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .item.active .item-name{color:var(--text);}
+
+  .selection-frame{
+    position:absolute;
+    left:4px; right:4px;
+    top:50%;
+    height:var(--item-h);
+    transform:translateY(-50%);
+    pointer-events:none;
+    border-top:1px solid var(--gold-soft);
+    border-bottom:1px solid var(--gold-soft);
+    z-index:3;
+  }
+  .selection-frame .d{
+    position:absolute;
+    width:8px; height:8px;
+    background:var(--gold);
+    transform:rotate(45deg);
+  }
+  .selection-frame .d.tl{top:-4.5px; left:-4.5px;}
+  .selection-frame .d.tr{top:-4.5px; right:-4.5px;}
+  .selection-frame .d.bl{bottom:-4.5px; left:-4.5px;}
+  .selection-frame .d.br{bottom:-4.5px; right:-4.5px;}
+
+  .roulette-viewport.spinning .selection-frame{
+    border-color:var(--cyan);
+    box-shadow:0 0 18px -2px var(--cyan-dim);
+  }
+  .roulette-viewport.spinning .selection-frame .d{background:var(--cyan);}
+
+  .fade{position:absolute; left:0; right:0; height:90px; pointer-events:none; z-index:2;}
+  .fade.top{top:0; background:linear-gradient(180deg, var(--bg-2), transparent);}
+  .fade.bottom{bottom:0; background:linear-gradient(0deg, var(--bg-2), transparent);}
+
+  /* ---------- Preview column ---------- */
+  .preview-col{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    min-width:0;
+  }
+  .preview-frame{
+    position:relative;
+    width:auto;
+    height:clamp(240px, 44vh, 400px);
+    max-width:100%;
+    aspect-ratio:3/4;
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--bg-3);
+    border:1px solid rgba(216,180,106,.18);
+  }
+  .preview-frame img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    animation:fadein .35s ease;
+  }
+  @keyframes fadein{from{opacity:0; transform:scale(1.04);} to{opacity:1; transform:scale(1);}}
+  .preview-frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(8,12,20,.85));
+    pointer-events:none;
+  }
+  .preview-frame .corners span{
+    position:absolute; width:16px; height:16px;
+    border-color:var(--gold);
+    border-style:solid;
+    opacity:.85;
+  }
+  .preview-frame .corners .c1{top:10px; left:10px; border-width:2px 0 0 2px;}
+  .preview-frame .corners .c2{top:10px; right:10px; border-width:2px 2px 0 0;}
+  .preview-frame .corners .c3{bottom:10px; left:10px; border-width:0 0 2px 2px;}
+  .preview-frame .corners .c4{bottom:10px; right:10px; border-width:0 2px 2px 0;}
+
+  .name-plate{
+    text-align:center;
+  }
+  .name-plate .idx{
+    font-size:.7rem;
+    letter-spacing:.3em;
+    color:var(--cyan);
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .name-plate .name{
+    font-family:'Cinzel', serif;
+    font-size:1.55rem;
+    font-weight:600;
+    letter-spacing:.03em;
+    color:var(--text);
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+  }
+  .spin-btn{
+    font-family:'Cinzel', serif;
+    font-size:1rem;
+    letter-spacing:.16em;
+    font-weight:600;
+    color:#241a05;
+    background:linear-gradient(180deg, #ecd291, var(--gold) 70%);
+    border:none;
+    padding:14px 46px;
+    border-radius:8px;
+    cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(216,180,106,.55);
+    transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  .spin-btn:hover{transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(216,180,106,.7);}
+  .spin-btn:active{transform:translateY(1px);}
+  .spin-btn:disabled{filter:grayscale(.5) brightness(.7); cursor:not-allowed; transform:none; box-shadow:none;}
+
+  .secondary-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+  }
+  .btn{
+    font-family:'Inter', sans-serif;
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--text);
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.1);
+    padding:9px 16px;
+    border-radius:7px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .btn:hover{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.2);}
+  .btn.accent{border-color:var(--cyan-dim); color:var(--cyan);}
+  .btn.accent:hover{background:var(--cyan-dim);}
+
+  /* ---------- Add panel ---------- */
+  .add-panel{
+    background:linear-gradient(160deg, var(--bg-2), var(--bg-1));
+    border:1px solid rgba(216,180,106,.12);
+    border-radius:14px;
+    padding:20px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .add-panel h3{
+    margin:0;
+    font-family:'Cinzel', serif;
+    font-size:1rem;
+    font-weight:600;
+    letter-spacing:.05em;
+    color:var(--gold);
+  }
+  .add-form{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:flex-end;
+  }
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:.7rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase;}
+  .field input[type=text]{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:7px;
+    padding:9px 12px;
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:.88rem;
+    min-width:200px;
+  }
+  .field input[type=text]:focus{outline:none; border-color:var(--gold-soft);}
+
+  .file-btn{
+    display:flex; align-items:center; gap:10px;
+  }
+  .file-btn input[type=file]{display:none;}
+  .file-btn .thumb{
+    width:38px; height:38px; border-radius:6px; object-fit:cover;
+    border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.03);
+    flex:none;
+  }
+  .file-btn label.pick{
+    font-size:.8rem; font-weight:600; color:var(--muted);
+    border:1px dashed rgba(255,255,255,.2);
+    padding:9px 14px; border-radius:7px; cursor:pointer;
+  }
+  .file-btn label.pick:hover{color:var(--text); border-color:rgba(255,255,255,.4);}
+
+  .add-submit{
+    font-size:.85rem; font-weight:600;
+    background:var(--gold-dim); color:var(--gold);
+    border:1px solid var(--gold-soft);
+    padding:10px 18px; border-radius:7px; cursor:pointer;
+  }
+  .add-submit:hover{background:var(--gold-soft);}
+
+  .roster{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:clamp(120px, 22vh, 220px);
+    overflow-y:auto;
+    padding-right:4px;
+  }
+  .field select{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:7px;
+    padding:9px 12px;
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:.88rem;
+    min-width:160px;
+  }
+  .field select:focus{outline:none; border-color:var(--gold-soft);}
+
+  .roster-row{
+    display:flex; align-items:center; gap:10px;
+    padding:6px 8px;
+    border-radius:6px;
+    background:rgba(255,255,255,.02);
+  }
+  .roster-row img{width:30px; height:30px; border-radius:5px; object-fit:cover; flex:none;}
+  .roster-row .rname{flex:1; font-size:.8rem; color:var(--text); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .roster-row select{
+    font-size:.72rem;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:5px;
+    color:var(--muted);
+    padding:3px 6px;
+    flex:none;
+    max-width:110px;
+  }
+  .roster-row button{
+    background:none; border:none; color:var(--muted);
+    cursor:pointer; font-size:1rem; line-height:1; padding:2px 6px;
+    border-radius:4px;
+  }
+  .roster-row button:hover{color:var(--danger); background:rgba(193,97,90,.12);}
+
+  .hint{color:var(--muted); font-size:.72rem; text-align:center;}
+
+  @media (max-width:640px){
+    .stage{flex-direction:column; align-items:center;}
+    .roulette-col{width:100%; max-width:280px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="eyebrow"><span class="diamond"></span>SELEÇÃO DE PERSONAGEM<span class="rule"></span></div>
+
+  <div class="group-bar">
+    <div class="group-tabs" id="groupTabs"></div>
+    <div class="custom-panel" id="customPanel" hidden>
+      <div class="cp-title">Grupos incluídos</div>
+      <div class="custom-list" id="customList"></div>
+      <div class="custom-create">
+        <input type="text" id="newGroupName" placeholder="Nome do novo grupo" maxlength="30">
+        <button id="createGroupBtn">Criar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="roulette-col">
+      <div class="roulette-viewport" id="viewport">
+        <div class="fade top"></div>
+        <div class="track" id="track"></div>
+        <div class="selection-frame">
+          <span class="d tl"></span><span class="d tr"></span><span class="d bl"></span><span class="d br"></span>
+        </div>
+        <div class="fade bottom"></div>
+      </div>
+    </div>
+
+    <div class="preview-col">
+      <div class="preview-frame" id="previewFrame">
+        <img id="previewImg" src="" alt="">
+        <div class="corners"><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span></div>
+      </div>
+      <div class="name-plate">
+        <div class="idx" id="charIdx">01 / 10</div>
+        <div class="name" id="charName">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="spin-btn" id="spinBtn">GIRAR</button>
+    <div class="secondary-row">
+      <button class="btn" id="shuffleBtn">🔀 Ordem aleatória</button>
+      <button class="btn" id="sortBtn">🔤 Ordem alfabética</button>
+      <button class="btn accent" id="toggleAddBtn">＋ Adicionar personagem</button>
+    </div>
+  </div>
+
+  <div class="add-panel" id="addPanel" hidden>
+    <h3>Novo personagem</h3>
+    <div class="add-form">
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" id="newName" placeholder="Nome do personagem" maxlength="40">
+      </div>
+      <div class="field">
+        <label>Grupo</label>
+        <select id="newGroupSelect"></select>
+      </div>
+      <div class="field">
+        <label>Foto</label>
+        <div class="file-btn">
+          <img class="thumb" id="newThumb" src="" alt="">
+          <label class="pick" for="newPhoto">Escolher imagem</label>
+          <input type="file" id="newPhoto" accept="image/*">
+        </div>
+      </div>
+      <button class="add-submit" id="addSubmit">Adicionar à roleta</button>
+    </div>
+    <div class="hint">Sem foto? Um avatar é gerado automaticamente a partir do nome.</div>
+
+    <h3 style="margin-top:4px;">Personagens na roleta</h3>
+    <div class="roster" id="roster"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Avatar generation (used when no photo is provided) ----------
+  const PALETTE = ['#3a5a78','#5a3a78','#786a3a','#3a7860','#78423a','#3a4d78','#6a3a78','#3a7878','#78563a','#4a3a78'];
+  function hashStr(s){
+    let h = 0;
+    for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) | 0; }
+    return Math.abs(h);
+  }
+  function initials(name){
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if(parts.length===0) return "?";
+    if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
+    return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+  }
+  function generateAvatar(name){
+    const h = hashStr(name);
+    const c1 = PALETTE[h % PALETTE.length];
+    const c2 = PALETTE[(h+3) % PALETTE.length];
+    const ini = initials(name);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${c1}"/>
+          <stop offset="1" stop-color="${c2}"/>
+        </linearGradient>
+      </defs>
+      <rect width="200" height="200" fill="url(#g)"/>
+      <text x="100" y="118" font-family="Cinzel, serif" font-size="72" font-weight="600"
+            text-anchor="middle" fill="rgba(255,255,255,.88)">${ini}</text>
+    </svg>`;
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  }
+
+  // ---------- Default groups & roster ----------
+  const groups = [
+    { id: 'g-fim', name: 'Piratas do Fim' },
+    { id: 'g-deuses', name: 'Piratas Deuses' },
+    { id: 'g-pintos', name: 'Piratas Pintos' }
+  ];
+  const DEFAULT_CHARS = [
+    ['Abel Squatina','g-fim','../img/Piratas do fim/NPCS/Abel.png'], ['Aiko Kurohana','g-fim','../img/Piratas do fim/NPCS/Aiko Kurohana.png'],
+    ['Akemi','g-fim','../img/Piratas do fim/NPCS/Akemi.png'], ['Akira Yudi','g-fim','../img/Piratas do fim/Personagens de jogadores/akira.png'],
+    ['Ame','g-fim','../img/Piratas do fim/NPCS/Ame.png'], ['Arianna Star','g-fim','../img/Piratas do fim/NPCS/Arianna.png'],
+    ['Arthur A. Leywin','g-fim','../img/Piratas do fim/Personagens de jogadores/arthur.png'], ['Ashley Belona','g-fim','../img/Piratas do fim/NPCS/Ashley.png'],
+    ['Atalanta','g-fim','../img/Piratas do fim/NPCS/Atalanta.png'], ['Portland D. Athena','g-fim','../img/Piratas do fim/NPCS/Athena.png'],
+    ['Beck','g-fim','../img/Piratas do fim/NPCS/Beck.png'], ['Bli','g-fim','../img/Piratas do fim/NPCS/Bli.png'],
+    ['Bye','g-fim','../img/Piratas do fim/NPCS/Bye.png'], ['C.C','g-fim','../img/Piratas do fim/NPCS/C.C.png'],
+    ['Carlos','g-fim','../img/Piratas do fim/NPCS/carlos.png'], ['Chad','g-fim','../img/Piratas do fim/NPCS/Chad.png'],
+    ['Chunyan','g-fim','../img/Piratas do fim/NPCS/chunyan.png'], ['Douma','g-fim','../img/Piratas do fim/NPCS/Douma.png'],
+    ['Draco vint','g-fim','../img/Piratas do fim/NPCS/Draco vint.png'], ['Ekko','g-fim','../img/Piratas do fim/NPCS/Ekko.png'],
+    ['Eliza','g-fim','../img/Piratas do fim/NPCS/Eliza.png'], ['Euryale','g-fim','../img/Piratas do fim/NPCS/Euryale.png'],
+    ['Finn','g-fim','../img/Piratas do fim/NPCS/Finn.png'], ['Freyr Arkin','g-fim','../img/Piratas do fim/Personagens de jogadores/freyr2.png'],
+    ['Frost','g-fim','../img/Piratas do fim/NPCS/Frost.png'], ['Haribel Spade','g-fim','../img/Piratas do fim/NPCS/Haribel Spade.png'],
+    ['Ito Parker','g-fim','../img/Piratas do fim/NPCS/ito.png'], ['John Pedro','g-fim','../img/Piratas do fim/NPCS/John.png'],
+    ['Julietta Capuleto','g-fim','../img/Piratas do fim/NPCS/Julietta.png'], ['Kallen','g-fim','../img/Piratas do fim/NPCS/Kallen.png'],
+    ['Kiara','g-fim','../img/Piratas do fim/NPCS/Kiara.png'], ['Lana','g-fim','../img/Piratas do fim/NPCS/Lana.png'],
+    ['Lee (Genos)','g-fim','../img/Piratas do fim/NPCS/Lee (Genos).png'], ['Li Gain','g-fim','../img/Piratas do fim/NPCS/Lee Gain.png'],
+    ['Marcus','g-fim','../img/Piratas do fim/NPCS/Marcus.png'], ['Marina','g-fim','../img/Piratas do fim/NPCS/Marina.png'],
+    ['Marla','g-fim','../img/Piratas do fim/NPCS/Marla.png'], ['Marya','g-fim','../img/Piratas do fim/NPCS/Marya.png'],
+    ['Maryanne','g-fim','../img/Piratas do fim/NPCS/maryanne.png'], ['Mathew','g-fim','../img/Piratas do fim/NPCS/Mathew.png'],
+    ['Mayuri Kuro','g-fim','../img/Piratas do fim/NPCS/Mayuri Kuro.png'], ['Merlinda','g-fim','../img/Piratas do fim/NPCS/Merlinda.png'],
+    ['Morrigan Belona','g-fim','../img/Piratas do fim/Personagens de jogadores/Mor2.png'], ['Mor Belona','g-fim','../img/Piratas do fim/Personagens de jogadores/Mor3.png'],
+    ['Nanami','g-fim','../img/Piratas do fim/NPCS/Nanami.png'], ['Norman','g-fim','../img/Piratas do fim/NPCS/Norman.png'],
+    ['Orihime','g-fim','../img/Piratas do fim/NPCS/Orihime.png'], ['Percy Zeppeli','g-fim','../img/Piratas do fim/Personagens de jogadores/Percy.png'],
+    ['Pietro Terry','g-fim','../img/Piratas do fim/NPCS/Pietro Terry (pierrô).png'], ['Pumpkin','g-fim','../img/Piratas do fim/NPCS/Pumpkin.png'],
+    ['Ram','g-fim','../img/Piratas do fim/NPCS/Ram.png'], ['rem','g-fim','../img/Piratas do fim/NPCS/rem.png'],
+    ['Rick','g-fim','../img/Piratas do fim/NPCS/Rick.png'], ['Rima','g-fim','../img/Piratas do fim/NPCS/Rima.png'],
+    ['Romeu Montecchio','g-fim','../img/Piratas do fim/NPCS/Romeu.png'], ['Sampo','g-fim','../img/Piratas do fim/NPCS/Sampo.png'],
+    ['Sebastian','g-fim','../img/Piratas do fim/NPCS/Sebastian.png'], ['Shirley','g-fim','../img/Piratas do fim/NPCS/Shirley.png'],
+    ['Sirius','g-fim','../img/Piratas do fim/NPCS/sirius.png'], ['Sonia','g-fim','../img/Piratas do fim/NPCS/Sonia.png'],
+    ['Squalo','g-fim','../img/Piratas do fim/NPCS/Squalo.png'], ['Suguru','g-fim','../img/Piratas do fim/NPCS/Suguru.png'],
+    ['Tapioca','g-fim','../img/Piratas do fim/NPCS/Tapioca.png'], ['Tartaglia','g-fim','../img/Piratas do fim/NPCS/Tartaglia.png'],
+    ['Tauren','g-fim','../img/Piratas do fim/NPCS/Tauren.png'], ['Thompson','g-fim','../img/Piratas do fim/NPCS/Thompson.png'],
+    ['Timmy','g-fim','../img/Piratas do fim/NPCS/Timmy.png'], ['Tina','g-fim','../img/Piratas do fim/NPCS/Tina.png'],
+    ['Urahara Kisuke','g-fim','../img/Piratas do fim/NPCS/Urahara Kisuke.png'], ['Wulf','g-fim','../img/Piratas do fim/NPCS/Wulf.png'],
+    ['Yone Salieri','g-fim','../img/Piratas do fim/NPCS/yone.jpg'], ['Zack D. End','g-fim','../img/Piratas do fim/Personagens de jogadores/Zack2.png'],
+    ['Ziriguidum','g-fim','../img/Piratas do fim/NPCS/Ziriguidum.png'], ['Zorkan','g-fim','../img/Piratas do fim/NPCS/Zorkan.png'],
+    ['Rei Kami','g-deuses','../img/Piratas Deuses/rei2.png'], ['Rosso Pew','g-pintos','../img/Piratas pintos/Rosso.png'],
+
+  ];
+  let characters = DEFAULT_CHARS.map(([n, gid, img]) => ({ id: cryptoId(), name: n, img: img || generateAvatar(n), groupId: gid }));
+
+  function cryptoId(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+
+  // ---------- Filter state ----------
+  // filter: {type:'all'} | {type:'group', id} | {type:'custom'}
+  let filter = { type:'all' };
+  let customSelected = new Set(groups.map(g => g.id));
+
+  function getActiveList(){
+    if(filter.type === 'all') return characters;
+    if(filter.type === 'group') return characters.filter(c => c.groupId === filter.id);
+    if(filter.type === 'custom') return characters.filter(c => customSelected.has(c.groupId));
+    return characters;
+  }
+
+  // ---------- Roulette state ----------
+  const viewport = document.getElementById('viewport');
+  const track = document.getElementById('track');
+  const previewImg = document.getElementById('previewImg');
+  const charName = document.getElementById('charName');
+  const charIdx = document.getElementById('charIdx');
+  const spinBtn = document.getElementById('spinBtn');
+  const groupTabs = document.getElementById('groupTabs');
+  const customPanel = document.getElementById('customPanel');
+  const customList = document.getElementById('customList');
+
+  let itemH = 104;
+  let scrollY = 0;              // continuous px position
+  let lastSelIndex = -1;
+  let animHandle = null;
+  let isSpinning = false;
+  let isDragging = false;
+
+  function setItemHeight(){
+    itemH = window.innerWidth <= 640 ? 84 : 104;
+    document.documentElement.style.setProperty('--item-h', itemH+'px');
+  }
+  setItemHeight();
+  window.addEventListener('resize', () => {
+    setItemHeight();
+    if(!isSpinning) render();
+  });
+
+  function mod(n, m){ return ((n % m) + m) % m; }
+
+  function render(){
+    const vh = viewport.clientHeight;
+    const centerY = vh/2;
+    const list = getActiveList();
+    const len = list.length;
+
+    track.innerHTML = '';
+
+    if(len === 0){
+      lastSelIndex = -1;
+      previewImg.removeAttribute('src');
+      charName.textContent = 'Nenhum personagem neste grupo';
+      charIdx.textContent = '00 / 00';
+      spinBtn.disabled = true;
+      return;
+    }
+    spinBtn.disabled = isSpinning;
+
+    const baseIdx = Math.round(scrollY/itemH);
+    const offsetFraction = scrollY - baseIdx*itemH;
+    const range = 5;
+    let selIndex = mod(baseIdx, len);
+
+    for(let k=-range; k<=range; k++){
+      const logicalIndex = baseIdx + k;
+      const idx = mod(logicalIndex, len);
+      const y = centerY + k*itemH - offsetFraction;
+      const dist = Math.abs(k*itemH - offsetFraction);
+      const scale = Math.max(0.74, Math.min(1.1, 1.1 - dist/620));
+      const opacity = Math.max(0.15, Math.min(1, 1 - dist/440));
+
+      if(y < -itemH || y > vh + itemH) continue;
+
+      const ch = list[idx];
+      const el = document.createElement('div');
+      el.className = 'item' + (k===0 ? ' active' : '');
+      el.style.top = '0px';
+      el.style.transform = `translateY(${y - itemH/2}px) scale(${scale})`;
+      el.style.opacity = opacity;
+      el.innerHTML = `<img src="${ch.img}" alt=""><div class="item-name">${escapeHtml(ch.name)}</div>`;
+      el.addEventListener('click', () => { if(!isSpinning) animateTo(logicalIndex, 480); });
+      track.appendChild(el);
+    }
+
+    if(selIndex !== lastSelIndex){
+      lastSelIndex = selIndex;
+      updatePreview(selIndex);
+    }
+  }
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function updatePreview(idx){
+    const list = getActiveList();
+    const ch = list[idx];
+    if(!ch) return;
+    previewImg.src = ch.img;
+    previewImg.alt = ch.name;
+    previewImg.style.animation = 'none';
+    void previewImg.offsetWidth;
+    previewImg.style.animation = '';
+    charName.textContent = ch.name;
+    charIdx.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(list.length).padStart(2,'0');
+  }
+
+  function easeOutQuint(t){ return 1 - Math.pow(1-t, 5); }
+
+  function animateTo(targetLogicalIndex, duration, onDone){
+    if(animHandle) cancelAnimationFrame(animHandle);
+    const startY = scrollY;
+    const targetY = targetLogicalIndex * itemH;
+    const startTime = performance.now();
+    isSpinning = duration > 1500;
+    if(isSpinning) viewport.classList.add('spinning');
+    spinBtn.disabled = true;
+
+    function step(now){
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = easeOutQuint(t);
+      scrollY = startY + (targetY - startY) * eased;
+      render();
+      if(t < 1){
+        animHandle = requestAnimationFrame(step);
+      } else {
+        scrollY = targetY;
+        // normalize to prevent unbounded growth, keeps same visual (mod length)
+        const len = getActiveList().length;
+        if(len > 0){
+          const normIdx = mod(Math.round(scrollY/itemH), len);
+          scrollY = normIdx * itemH;
+        }
+        render();
+        viewport.classList.remove('spinning');
+        spinBtn.disabled = false;
+        isSpinning = false;
+        if(onDone) onDone();
+      }
+    }
+    animHandle = requestAnimationFrame(step);
+  }
+
+  function spin(){
+    if(isSpinning) return;
+    const len = getActiveList().length;
+    if(len === 0) return;
+    const currentBase = Math.round(scrollY/itemH);
+    const loops = 3 + Math.floor(Math.random()*2); // 3-4 full loops
+    const randomTargetActual = Math.floor(Math.random()*len);
+    const currentActual = mod(currentBase, len);
+    let deltaToTarget = mod(randomTargetActual - currentActual, len);
+    if(deltaToTarget === 0 && len > 1) deltaToTarget = len; // ensure it actually spins
+    const targetLogical = currentBase + loops*len + deltaToTarget;
+    animateTo(targetLogical, 3800 + Math.random()*600);
+  }
+
+  // ---------- Manual scroll (wheel + drag) ----------
+  viewport.addEventListener('wheel', (e) => {
+    if(isSpinning) return;
+    e.preventDefault();
+    if(animHandle) cancelAnimationFrame(animHandle);
+    scrollY += (e.deltaY > 0 ? 1 : -1) * itemH * 0.9;
+    render();
+  }, { passive:false });
+
+  let dragStartY = 0, dragStartScroll = 0;
+  viewport.addEventListener('pointerdown', (e) => {
+    if(isSpinning) return;
+    isDragging = true;
+    viewport.classList.add('dragging');
+    dragStartY = e.clientY;
+    dragStartScroll = scrollY;
+    viewport.setPointerCapture(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', (e) => {
+    if(!isDragging) return;
+    const dy = e.clientY - dragStartY;
+    scrollY = dragStartScroll - dy;
+    render();
+  });
+  function endDrag(e){
+    if(!isDragging) return;
+    isDragging = false;
+    viewport.classList.remove('dragging');
+    const targetLogical = Math.round(scrollY/itemH);
+    animateTo(targetLogical, 260);
+  }
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointerleave', endDrag);
+
+  // ---------- Buttons ----------
+  spinBtn.addEventListener('click', spin);
+
+  // Reorders only the characters currently visible under the active filter,
+  // keeping every other character's position untouched.
+  function reorderActive(mode){
+    const activeIds = new Set(getActiveList().map(c => c.id));
+    const positions = [];
+    characters.forEach((c, i) => { if(activeIds.has(c.id)) positions.push(i); });
+    if(positions.length < 2) return;
+    let subset = positions.map(i => characters[i]);
+    if(mode === 'shuffle'){
+      for(let i = subset.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [subset[i], subset[j]] = [subset[j], subset[i]];
+      }
+    } else {
+      subset.sort((a,b) => a.name.localeCompare(b.name, 'pt-BR', {sensitivity:'base'}));
+    }
+    positions.forEach((pos, k) => { characters[pos] = subset[k]; });
+  }
+
+  document.getElementById('shuffleBtn').addEventListener('click', () => {
+    if(isSpinning) return;
+    const list = getActiveList();
+    if(list.length === 0) return;
+    const currentChar = list[mod(Math.round(scrollY/itemH), list.length)];
+    reorderActive('shuffle');
+    const newIdx = getActiveList().findIndex(c => c.id === currentChar.id);
+    scrollY = Math.max(0,newIdx) * itemH;
+    render();
+    renderRoster();
+  });
+
+  document.getElementById('sortBtn').addEventListener('click', () => {
+    if(isSpinning) return;
+    const list = getActiveList();
+    if(list.length === 0) return;
+    const currentChar = list[mod(Math.round(scrollY/itemH), list.length)];
+    reorderActive('sort');
+    const newIdx = getActiveList().findIndex(c => c.id === currentChar.id);
+    scrollY = Math.max(0,newIdx) * itemH;
+    render();
+    renderRoster();
+  });
+
+  // ---------- Group tabs & filtering ----------
+  function applyFilter(newFilter){
+    filter = newFilter;
+    scrollY = 0;
+    lastSelIndex = -1;
+    renderGroupTabs();
+    render();
+  }
+
+  function renderGroupTabs(){
+    groupTabs.innerHTML = '';
+
+    const allPill = document.createElement('button');
+    allPill.className = 'group-pill' + (filter.type === 'all' ? ' active' : '');
+    allPill.innerHTML = `Todos os grupos <span class="count">${characters.length}</span>`;
+    allPill.addEventListener('click', () => { customPanel.hidden = true; applyFilter({ type:'all' }); });
+    groupTabs.appendChild(allPill);
+
+    groups.forEach(g => {
+      const count = characters.filter(c => c.groupId === g.id).length;
+      const pill = document.createElement('button');
+      pill.className = 'group-pill' + (filter.type === 'group' && filter.id === g.id ? ' active' : '');
+      pill.innerHTML = `${escapeHtml(g.name)} <span class="count">${count}</span>`;
+      pill.addEventListener('click', () => { customPanel.hidden = true; applyFilter({ type:'group', id:g.id }); });
+      groupTabs.appendChild(pill);
+    });
+
+    const customPill = document.createElement('button');
+    const customCount = characters.filter(c => customSelected.has(c.groupId)).length;
+    customPill.className = 'group-pill custom-pill' + (filter.type === 'custom' ? ' active' : '');
+    customPill.innerHTML = `🧩 Personalizado <span class="count">${customCount}</span>`;
+    customPill.addEventListener('click', () => {
+      const willOpen = customPanel.hidden;
+      customPanel.hidden = !willOpen;
+      if(willOpen){
+        renderCustomList();
+        applyFilter({ type:'custom' });
+      }
+    });
+    groupTabs.appendChild(customPill);
+  }
+
+  function renderCustomList(){
+    customList.innerHTML = '';
+    groups.forEach(g => {
+      const count = characters.filter(c => c.groupId === g.id).length;
+      const row = document.createElement('label');
+      row.className = 'custom-row';
+      const checked = customSelected.has(g.id);
+      row.innerHTML = `<input type="checkbox" ${checked ? 'checked' : ''}> ${escapeHtml(g.name)} <span class="rc-count">${count}</span>`;
+      row.querySelector('input').addEventListener('change', (e) => {
+        if(e.target.checked) customSelected.add(g.id); else customSelected.delete(g.id);
+        if(filter.type === 'custom') applyFilter({ type:'custom' });
+        else renderGroupTabs();
+      });
+      customList.appendChild(row);
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if(!customPanel.hidden && !customPanel.contains(e.target) && !e.target.closest('.custom-pill')){
+      customPanel.hidden = true;
+    }
+  });
+
+  function createGroup(name){
+    const trimmed = name.trim();
+    if(!trimmed) return null;
+    const g = { id: 'g-' + cryptoId(), name: trimmed };
+    groups.push(g);
+    customSelected.add(g.id);
+    return g;
+  }
+
+  document.getElementById('createGroupBtn').addEventListener('click', () => {
+    const input = document.getElementById('newGroupName');
+    const g = createGroup(input.value);
+    if(!g) { input.focus(); return; }
+    input.value = '';
+    renderCustomList();
+    renderGroupTabs();
+    populateGroupSelect(g.id);
+    if(filter.type === 'custom') applyFilter({ type:'custom' });
+  });
+  document.getElementById('newGroupName').addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') document.getElementById('createGroupBtn').click();
+  });
+
+  function populateGroupSelect(selectId){
+    const sel = document.getElementById('newGroupSelect');
+    const prev = selectId || sel.value;
+    sel.innerHTML = groups.map(g => `<option value="${g.id}">${escapeHtml(g.name)}</option>`).join('');
+    if(groups.some(g => g.id === prev)) sel.value = prev;
+  }
+
+  // ---------- Add panel ----------
+  const addPanel = document.getElementById('addPanel');
+  const toggleAddBtn = document.getElementById('toggleAddBtn');
+  toggleAddBtn.addEventListener('click', () => {
+    addPanel.hidden = !addPanel.hidden;
+    toggleAddBtn.textContent = addPanel.hidden ? '＋ Adicionar personagem' : '－ Fechar painel';
+    if(!addPanel.hidden){
+      populateGroupSelect(filter.type === 'group' ? filter.id : groups[0] && groups[0].id);
+      renderRoster();
+    }
+  });
+
+  const newName = document.getElementById('newName');
+  const newPhoto = document.getElementById('newPhoto');
+  const newThumb = document.getElementById('newThumb');
+  let pendingPhotoData = null;
+
+  newPhoto.addEventListener('change', () => {
+    const file = newPhoto.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      pendingPhotoData = e.target.result;
+      newThumb.src = pendingPhotoData;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('addSubmit').addEventListener('click', () => {
+    const name = newName.value.trim();
+    if(!name){ newName.focus(); return; }
+    const groupId = document.getElementById('newGroupSelect').value || (groups[0] && groups[0].id);
+    const img = pendingPhotoData || generateAvatar(name);
+    characters.push({ id: cryptoId(), name, img, groupId });
+    newName.value = '';
+    newPhoto.value = '';
+    newThumb.src = '';
+    pendingPhotoData = null;
+    renderGroupTabs();
+    render();
+    renderRoster();
+  });
+
+  function renderRoster(){
+    const roster = document.getElementById('roster');
+    roster.innerHTML = '';
+    characters.forEach((ch) => {
+      const row = document.createElement('div');
+      row.className = 'roster-row';
+      row.innerHTML = `<img src="${ch.img}" alt=""><div class="rname">${escapeHtml(ch.name)}</div>`;
+
+      const groupSel = document.createElement('select');
+      groupSel.innerHTML = groups.map(g => `<option value="${g.id}" ${g.id===ch.groupId?'selected':''}>${escapeHtml(g.name)}</option>`).join('');
+      groupSel.addEventListener('change', () => {
+        ch.groupId = groupSel.value;
+        renderGroupTabs();
+        render();
+      });
+      row.appendChild(groupSel);
+
+      const btn = document.createElement('button');
+      btn.textContent = '×';
+      btn.title = 'Remover';
+      btn.addEventListener('click', () => {
+        if(characters.length <= 1) return;
+        characters = characters.filter(c => c.id !== ch.id);
+        renderGroupTabs();
+        render();
+        renderRoster();
+      });
+      row.appendChild(btn);
+      roster.appendChild(row);
+    });
+  }
+
+  // ---------- Init ----------
+  renderGroupTabs();
+  populateGroupSelect();
+  render();
+  renderRoster();
+})();
+</script>
+</body>
+</html>
