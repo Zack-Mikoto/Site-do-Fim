@@ -357,10 +357,7 @@ summary {
 }
 
 .armas {
-    text-align: center;
     color: azure;
-    border: lightblue;
-    border-radius: 1px;
 }
 
 .IDOH {
@@ -381,5 +378,19 @@ summary {
     width: 150px;
     height: 150px;
     border: solid aquamarine;
+    border-radius: 10px;
+}
+
+.Owari {
+    text-align: center;
+    font-size: 100px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(0, 174, 255);
+    font-style: oblique;
+}
+
+.OwarinoStyle {
+    width: 150px;
+    height: 150px;
     border-radius: 10px;
 }
