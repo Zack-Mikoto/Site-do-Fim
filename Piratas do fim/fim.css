@@ -1,7 +1,12 @@
 body {
+    background: url(../img/Fundo3.png);
     background-color: rgb(168, 33, 168);
     color: white;
     font-family: 'Times New Roman', Times, serif;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1250px;
+    background-attachment: fixed;
 }
 
 header {
