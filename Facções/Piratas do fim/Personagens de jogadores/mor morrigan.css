@@ -2,11 +2,12 @@ body {
     background-color: black;
     color: rgb(139, 10, 10);
     font-family: 'Times New Roman', Times, serif;
-    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(../../img/JollyRogers/JollyRogerArthur.png);
+    background: linear-gradient(rgba(0,0,0,00.10), rgba(0,0,0,00.90 )), url(../../../img/JollyRogers/JollyRogerMor.png);
     background-position:0px;
     background-repeat: no-repeat;
     background-size:cover;
     background-attachment: fixed;
+    background-size: 100%;
 }
 
 header {
@@ -143,16 +144,16 @@ details[open] .si::before {
 
 .botaoraca {
     background-color: black;
-    border: solid darkred;
-    color: darkred;
+    border: solid yellow;
+    color: yellow;
     border-radius: 8px;
     max-width: 96px;
     text-align: right;
 }
 
-.humanomod {
+.mink {
     border-radius: 8px;
-    border: solid darkred;
+    border: solid yellow;
     max-width: 48px;
     text-align: center;
 }
@@ -367,19 +368,5 @@ summary {
     width: 150px;
     height: 150px;
     border: solid rgb(66, 66, 66);
-    border-radius: 10px;
-}
-
-.MAHA {
-    width: 150px;
-    height: 150px;
-    border: solid rgb(216, 184, 0);
-    border-radius: 10px;
-}
-
-.SHIKKE {
-    width: 150px;
-    height: 150px;
-    border: solid aquamarine;
     border-radius: 10px;
 }

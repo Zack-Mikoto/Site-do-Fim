@@ -1,0 +1,52 @@
+body {
+    background: url(img/Fundo2.png), linear-gradient(to bottom, rgb(7, 64, 128), rgb(11, 108, 171));
+    font-family: 'Times New Roman', Times, serif;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+header {
+    text-align: center;
+    color: whitesmoke;
+    font-size: 48px;
+}
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
+    justify-content: space-between;
+    list-style-type: none;
+    text-align: center;
+    padding: 16px;
+}
+
+.link-cor {
+    --cor: white;
+    text-align: center;
+    color: var(--cor);
+    list-style-type: none;
+}
+
+.link-imagem {
+    width: 150px;
+    height: 150px;
+    border: solid var(--cor);
+}
+
+.f0 {
+    text-align: center;
+    color:whitesmoke;
+    font-size: 24px;
+    list-style: none;
+    display: inline-flex;
+    cursor:pointer;
+    background-color: var(--cor);
+    line-height: 0.9;
+    padding: 0.5% 1.2%;
+}
+
+.coresadsa {
+     color: rgb(37, 13, 13);
+     }
