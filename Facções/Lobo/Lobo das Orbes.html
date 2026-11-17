@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lobo das Orbes</title>
+<style>
+:root{--bg:#f4f1fa;--fg:#2a2338;--card:#ffffff;--accent:#e53548;--muted:#7a7090;--b1:#2b2640;--b2:#322c4a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17131f;--fg:#efeaf8;--card:#241e33;--muted:#a79bc0}}
+:root[data-theme="dark"]{--bg:#17131f;--fg:#efeaf8;--card:#241e33;--muted:#a79bc0}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}
+h1{margin:4px 0 0;font-size:1.6rem}
+.sub{margin:0;color:var(--muted);font-size:.9rem;text-align:center}
+#hud{display:none;font-weight:600}
+.wrap{position:relative;width:min(100%,600px)}
+canvas{display:block;width:100%;height:auto;border-radius:14px;border:3px solid var(--accent);touch-action:none}
+.panel,.overlay{background:var(--card);border-radius:16px;padding:20px;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+.panel{width:min(100%,420px)}
+.overlay{position:absolute;inset:0;margin:auto;height:fit-content;width:80%;max-width:340px;display:none}
+button{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-size:1rem;cursor:pointer;margin:4px}
+button.alt{background:transparent;color:var(--fg);border:2px solid var(--muted)}
+input[type=range]{width:80%}
+.big{font-size:2.2rem;font-weight:700;color:var(--accent)}
+</style>
+</head>
+<body>
+<h1>🐺 Lobo das Orbes</h1>
+<div id="hud">Orbes: <span id="score">0</span></div>
+
+<div class="panel" id="menu">
+  <p class="sub">Escolha o tamanho da grade (recomendado: de 12 a 19)</p>
+  <div class="big"><span id="nv">12</span> × <span id="nv2">12</span></div>
+  <input type="range" id="size" min="2" max="50" value="12">
+  <p class="sub">Mova com WASD, setas ou deslize na tela.</p>
+  <button id="play">Jogar</button>
+</div>
+
+<div class="wrap" id="wrap" style="display:none">
+  <canvas id="cv"></canvas>
+  <div class="overlay" id="over">
+    <div class="big" id="ot"></div>
+    <p id="om"></p>
+    <button id="again">Jogar de novo</button>
+    <button class="alt" id="tomenu">Mudar tamanho</button>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIGURAÇÃO DAS ORBES ============
+   Cada tipo de orbe tem a mesma função (+1 e crescer).
+   Para usar imagem própria, preencha "img" com o caminho
+   (ex.: "img/orbe1.png") ou com uma data URI.
+   Se img for null (ou falhar ao carregar), a orbe é desenhada com a cor. */
+const ORB_TYPES = [
+  { nome: "Orbe azul",    img: "../../img/Técnicas/Zack/Akira.png", cor: "#4fc3ff" },
+  { nome: "Orbe dourada", img: "../../img/Técnicas/Zack/ChadAprimorado.png", cor: "#ffcf40" },
+  { nome: "Orbe verde",   img: "../../img/Técnicas/Zack/HalfSun.png", cor: "#5be584" },
+  { nome: "Orbe rosa",    img: "../../img/Técnicas/Zack/AtemAprimorado.png", cor: "#ff7ab8" }
+];
+const TICK_MS = 130; // velocidade (menor = mais rápido)
+/* ================================================ */
+
+ORB_TYPES.forEach(o => {
+  if (o.img) { const im = new Image(); im.src = o.img; o.el = im; }
+});
+
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+let n = 12, c = 40, snake, dir, queue, pending, orb, score, state = "menu", timer = null;
+
+$("size").oninput = e => { $("nv").textContent = $("nv2").textContent = e.target.value; };
+$("play").onclick = () => start(+$("size").value);
+$("again").onclick = () => start(n);
+$("tomenu").onclick = () => {
+  clearInterval(timer); state = "menu";
+  $("wrap").style.display = "none"; $("hud").style.display = "none"; $("menu").style.display = "";
+};
+
+function start(size) {
+  n = size; c = Math.max(16, Math.min(56, Math.floor(600 / n)));
+  cv.width = cv.height = n * c;
+  const m = Math.floor((n - 1) / 2);
+  snake = [{ x: m, y: m }]; dir = { x: 0, y: 0 }; queue = []; pending = 0; score = 0;
+  $("score").textContent = 0;
+  spawnOrb();
+  state = "ready"; clearInterval(timer);
+  $("menu").style.display = "none"; $("wrap").style.display = ""; $("hud").style.display = "";
+  $("over").style.display = "none";
+}
+
+function spawnOrb() {
+  const used = new Set(snake.map(s => s.x + "," + s.y)), free = [];
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (!used.has(x + "," + y)) free.push({ x, y });
+  const p = free[Math.floor(Math.random() * free.length)];
+  orb = { x: p.x, y: p.y, type: ORB_TYPES[Math.floor(Math.random() * ORB_TYPES.length)] };
+}
+
+function steer(d) {
+  if (state !== "ready" && state !== "run") return;
+  const last = queue.length ? queue[queue.length - 1] : dir;
+  if (last.x === d.x && last.y === d.y) return;
+  if (snake.length > 1 && last.x + d.x === 0 && last.y + d.y === 0) return;
+  if (queue.length < 2) queue.push(d);
+  if (state === "ready") { state = "run"; timer = setInterval(step, TICK_MS); }
+}
+
+const KEYS = {
+  ArrowUp: [0, -1], w: [0, -1], W: [0, -1], ArrowDown: [0, 1], s: [0, 1], S: [0, 1],
+  ArrowLeft: [-1, 0], a: [-1, 0], A: [-1, 0], ArrowRight: [1, 0], d: [1, 0], D: [1, 0]
+};
+addEventListener("keydown", e => {
+  const k = KEYS[e.key];
+  if (k) { e.preventDefault(); steer({ x: k[0], y: k[1] }); }
+});
+let t0 = null;
+cv.addEventListener("touchstart", e => { t0 = e.touches[0]; }, { passive: true });
+cv.addEventListener("touchend", e => {
+  if (!t0) return;
+  const t = e.changedTouches[0], dx = t.clientX - t0.clientX, dy = t.clientY - t0.clientY;
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+  steer(Math.abs(dx) > Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) });
+  t0 = null;
+});
+
+function step() {
+  if (queue.length) dir = queue.shift();
+  if (!dir.x && !dir.y) return;
+  const h = snake[0], nh = { x: h.x + dir.x, y: h.y + dir.y };
+  if (nh.x < 0 || nh.y < 0 || nh.x >= n || nh.y >= n) return end(false);
+  const grows = pending > 0;                       // cresce no movimento seguinte à coleta
+  const body = grows ? snake : snake.slice(0, -1);
+  if (body.some(s => s.x === nh.x && s.y === nh.y)) return end(false);
+  snake.unshift(nh);
+  if (grows) pending--; else snake.pop();
+  if (orb && nh.x === orb.x && nh.y === orb.y) {
+    score++; pending++; $("score").textContent = score; orb = null;
+    if (snake.length + pending >= n * n) return end(true);
+    spawnOrb();
+  }
+}
+
+function end(win) {
+  clearInterval(timer); state = win ? "win" : "over";
+  $("ot").textContent = win ? "🏆 Vitória!" : "Fim de jogo";
+  $("om").textContent = win
+    ? "Você preencheu a grade inteira! Orbes coletadas: " + score
+    : "Você coletou " + score + (score === 1 ? " orbe." : " orbes.");
+  $("over").style.display = "block";
+}
+
+/* ============ DESENHO ============ */
+const WHITE = "#ffffff", FUR = "#f1ecf8", LINE = "#cbc1dc", RED = "#e53548";
+
+function puff(x, y, r) {
+  ctx.fillStyle = FUR; ctx.strokeStyle = LINE; ctx.lineWidth = Math.max(1, c * .025);
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.stroke();
+}
+
+function drawBody(i) {
+  const s = snake[i], x = (s.x + .5) * c, y = (s.y + .5) * c, t = i / Math.max(snake.length, 1);
+  const r = c * (.36 - .09 * t);
+  if (i === snake.length - 1 && i > 0) {            // cauda vermelha
+    const p = snake[i - 1], dx = s.x - p.x, dy = s.y - p.y;
+    ctx.strokeStyle = RED; ctx.lineWidth = c * .09; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(x, y);
+    ctx.quadraticCurveTo(x + dx * c * .4 - dy * c * .2, y + dy * c * .4 + dx * c * .2, x + dx * c * .5, y + dy * c * .5);
+    ctx.stroke();
+  }
+  for (let k = 0; k < 8; k++) {
+    const a = k * Math.PI / 4 + i;
+    puff(x + Math.cos(a) * r * .75, y + Math.sin(a) * r * .75, r * .38);
+  }
+  ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  if (i % 3 === 1) {                                  // cicatriz vermelha
+    ctx.strokeStyle = RED; ctx.lineWidth = c * .03; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(x - r * .4, y - r * .3); ctx.lineTo(x + r * .1, y + r * .1); ctx.lineTo(x + r * .4, y + r * .05); ctx.stroke();
+  }
+}
+
+function drawHead() {
+  const s = snake[0], x = (s.x + .5) * c, y = (s.y + .5) * c;
+  for (let k = 0; k < 11; k++) {                      // juba fofa
+    const a = k * Math.PI * 2 / 11;
+    puff(x + Math.cos(a) * c * .34, y + Math.sin(a) * c * .34, c * .17);
+  }
+  ctx.strokeStyle = RED; ctx.lineCap = "round"; ctx.lineWidth = c * .1;   // chifres
+  [-1, 1].forEach(d => {
+    ctx.beginPath(); ctx.moveTo(x + d * c * .13, y - c * .26);
+    ctx.quadraticCurveTo(x + d * c * .3, y - c * .42, x + d * c * .17, y - c * .6); ctx.stroke();
+  });
+  ctx.fillStyle = WHITE; ctx.strokeStyle = LINE; ctx.lineWidth = c * .025;
+  ctx.beginPath(); ctx.arc(x, y, c * .33, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "#2a2338";                                              // orelhas
+  [-1, 1].forEach(d => { ctx.beginPath(); ctx.ellipse(x + d * c * .27, y - c * .2, c * .045, c * .09, d * .4, 0, 7); ctx.fill(); });
+  ctx.fillStyle = RED;                                                    // olhos
+  [-1, 1].forEach(d => { ctx.beginPath(); ctx.arc(x + d * c * .12, y - c * .02, c * .06, 0, 7); ctx.fill(); });
+  ctx.fillStyle = "#fff";
+  [-1, 1].forEach(d => { ctx.beginPath(); ctx.arc(x + d * c * .12 - c * .015, y - c * .04, c * .018, 0, 7); ctx.fill(); });
+  ctx.fillStyle = "#ece6f4"; ctx.beginPath(); ctx.ellipse(x, y + c * .12, c * .12, c * .08, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = "#2a2338"; ctx.beginPath(); ctx.ellipse(x, y + c * .08, c * .04, c * .028, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.strokeStyle = "#2a2338"; ctx.lineWidth = c * .015;  // presinhas
+  [-1, 1].forEach(d => { ctx.beginPath(); ctx.moveTo(x + d * c * .05, y + c * .15); ctx.lineTo(x + d * c * .08, y + c * .22); ctx.lineTo(x + d * c * .02, y + c * .17); ctx.fill(); ctx.stroke(); });
+  ctx.strokeStyle = RED; ctx.lineWidth = c * .025;                         // cicatriz
+  ctx.beginPath(); ctx.moveTo(x - c * .24, y + c * .05); ctx.lineTo(x - c * .17, y + c * .15); ctx.stroke();
+}
+
+function drawOrb(t) {
+  const x = (orb.x + .5) * c, y = (orb.y + .5) * c + Math.sin(t / 250) * c * .04, r = c * .3, ty = orb.type;
+  if (ty.el && ty.el.complete && ty.el.naturalWidth) {
+    ctx.drawImage(ty.el, x - r * 1.2, y - r * 1.2, r * 2.4, r * 2.4); return;
+  }
+  const g = ctx.createRadialGradient(x - r * .3, y - r * .3, r * .1, x, y, r);
+  g.addColorStop(0, "#ffffff"); g.addColorStop(.35, ty.cor); g.addColorStop(1, "rgba(0,0,0,.45)");
+  ctx.shadowColor = ty.cor; ctx.shadowBlur = c * .35;
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function frame(t) {
+  requestAnimationFrame(frame);
+  if (state === "menu") return;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    ctx.fillStyle = (x + y) % 2 ? "#2b2640" : "#322c4a"; ctx.fillRect(x * c, y * c, c, c);
+  }
+  if (orb) drawOrb(t);
+  for (let i = snake.length - 1; i > 0; i--) drawBody(i);
+  drawHead();
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
